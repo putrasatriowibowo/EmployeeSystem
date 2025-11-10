@@ -23,7 +23,6 @@ public class EmployeeManager {
 
                         System.out.print("Apakah data sudah benar? (y/n): ");
                         String konfirm = input.nextLine();
-                        System.out.println();
                         if(konfirm.equals("y")){
                             employee = new Employee(nameInput, positionInput, salaryInput);
                             listEmployees.add(employee);
@@ -49,19 +48,25 @@ public class EmployeeManager {
                     if(!listEmployees.isEmpty()){
                         System.out.println("\n=====MENGEDIT DATA KARYAWAN=====");
                         int indexKaryawan = tanyaIndex();
-                        System.out.println("\nKaryawan index ke-" + indexKaryawan);
-                        tampil(listEmployees.get(indexKaryawan).name,
-                                listEmployees.get(indexKaryawan).position,
-                                listEmployees.get(indexKaryawan).salary);
 
-                        String nameInput = tanyaNama();
-                        String positionInput = tanyaJabatan();
-                        int salaryInput = tanyaGaji();
+                        if (indexKaryawan < listEmployees.size()){
+                            System.out.println("\nKaryawan index ke-" + indexKaryawan);
+                            tampil(listEmployees.get(indexKaryawan).name,
+                                    listEmployees.get(indexKaryawan).position,
+                                    listEmployees.get(indexKaryawan).salary);
 
-                        Employee newEmployee = new Employee(nameInput, positionInput, salaryInput);
-                        listEmployees.set(indexKaryawan, newEmployee);
+                            System.out.println("\nData baru:");
+                            String nameInput = tanyaNama();
+                            String positionInput = tanyaJabatan();
+                            int salaryInput = tanyaGaji();
 
-                        System.out.println("\nKaryawan index ke-" + indexKaryawan + " telah diperbaharui");
+                            Employee newEmployee = new Employee(nameInput, positionInput, salaryInput);
+                            listEmployees.set(indexKaryawan, newEmployee);
+
+                            System.out.println("\nKaryawan index ke-" + indexKaryawan + " telah diperbaharui");
+                        } else {
+                            outOfBound();
+                        }
                     } else {
                         dataKosong();
                     }
@@ -72,22 +77,27 @@ public class EmployeeManager {
                         System.out.println("\n=====MENGHAPUS KARYAWAN=====");
                         int indexKaryawan = tanyaIndex();
 
-                        System.out.println("\nKaryawan index ke-" + indexKaryawan);
-                        tampil(listEmployees.get(indexKaryawan).name,
-                                listEmployees.get(indexKaryawan).position,
-                                listEmployees.get(indexKaryawan).salary);
+                        if (indexKaryawan < listEmployees.size()){
 
-                        System.out.print("Apakah kamu yakin mau gitmenghapusnya? (y/n): ");
-                        String konfirm = input.nextLine();
+                            System.out.println("\nKaryawan index ke-" + indexKaryawan);
+                            tampil(listEmployees.get(indexKaryawan).name,
+                                    listEmployees.get(indexKaryawan).position,
+                                    listEmployees.get(indexKaryawan).salary);
 
-                        if(konfirm.equals("y")){
-                            listEmployees.remove(indexKaryawan);
-                            System.out.println("Karyawan ke-" + indexKaryawan + "telah dihapus");
+                            System.out.print("Apakah kamu yakin mau gitmenghapusnya? (y/n): ");
+                            String konfirm = input.nextLine();
+
+                            if(konfirm.equals("y")){
+                                listEmployees.remove(indexKaryawan);
+                                System.out.println("\nKaryawan ke-" + indexKaryawan + "telah dihapus");
+                            }
+                        } else{
+                            outOfBound();
                         }
                     } else{
                         dataKosong();
-                        pause();
                     }
+                    pause();
                     break;
                 default:
                     System.out.println("\nPilihan tidak tersedia");
@@ -154,5 +164,9 @@ public class EmployeeManager {
 
     static void dataKosong(){
         System.out.println("\nData belum ada");
+    }
+
+    static void outOfBound(){
+        System.out.println("\nIndex tidak ditemukan");
     }
 }
